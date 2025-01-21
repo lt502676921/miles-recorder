@@ -3,6 +3,7 @@ import * as ort from "onnxruntime-web";
 ort.env.wasm.numThreads = 1;
 
 export class OnnxWrapper {
+  // @ts-ignore
   protected session: ort.InferenceSession;
   private readonly sessionReady: Promise<void>;
 
