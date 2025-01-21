@@ -1,5 +1,7 @@
-import { Whisper } from "@/whisper/whisper";
-import { useRef } from "react";
+import { useRef } from 'react';
+import OpenAI from 'openai';
+import { Whisper } from '@/whisper/whisper';
+
 const modelPath = process.env.WHISPER_MODEL_PATH;
 
 export const useWhisper = () => {
@@ -14,22 +16,23 @@ export const useWhisper = () => {
     return result.str.data[0] as string;
   };
 
-  // const remoteRun = async (blob: Blob) => {
-  //   function getBaseUrl() {
-  //     return typeof window !== "undefined" ? window.location.origin : "";
-  //   }
-  //   const baseURL = `${getBaseUrl()}/api`;
+  const remoteRun = async (blob: Blob) => {
+    function getBaseUrl() {
+      return typeof window !== 'undefined' ? window.location.origin : '';
+    }
+    const baseURL = `${getBaseUrl()}/api`;
 
-  //   const openai = new OpenAI({
-  //     baseURL,
-  //     apiKey: "",
-  //     dangerouslyAllowBrowser: true,
-  //   });
-  //   const data = await openai.audio.transcriptions.create({
-  //     file: new File([blob], "audio.wav"),
-  //     model: "whisper-1",
-  //   });
-  //   return data.text;
-  // };
-  return { localRun };
+    const openai = new OpenAI({
+      baseURL,
+      apiKey: '',
+      dangerouslyAllowBrowser: true,
+    });
+    const data = await openai.audio.transcriptions.create({
+      file: new File([blob], 'audio.wav'),
+      model: 'whisper-1',
+    });
+    return data.text;
+  };
+
+  return { localRun, remoteRun };
 };

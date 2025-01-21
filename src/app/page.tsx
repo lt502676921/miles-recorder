@@ -6,10 +6,10 @@ import { useState } from 'react';
 
 export default function Local() {
   const [transcription, setTranscription] = useState<String[]>([]);
-  const { localRun } = useWhisper();
+  const { remoteRun } = useWhisper();
   const { recording, processing } = useVad({
-    onSpeechEnd: async ({ float32Array }) => {
-      const value = await localRun(float32Array);
+    onSpeechEnd: async ({ blob }) => {
+      const value = await remoteRun(blob);
       if (value.trim()) {
         setTranscription(pre => {
           const temp = [...pre];
@@ -73,10 +73,10 @@ export default function Local() {
                   name: 'Download VAD',
                   path: process.env.VAD_MODEL_PATH!,
                 },
-                {
-                  name: 'Download WHISPER',
-                  path: process.env.WHISPER_MODEL_PATH!,
-                },
+                // {
+                //   name: 'Download WHISPER',
+                //   path: process.env.WHISPER_MODEL_PATH!,
+                // },
               ]}
             />
           </div>
