@@ -8,8 +8,11 @@ export class VadDetector {
   private readonly samplingRate: number;
   private readonly minSilenceSamples: number;
   private readonly speechPadSamples: number;
+  // @ts-ignore
   private triggered: boolean;
+  // @ts-ignore
   private tempEnd: number;
+  // @ts-ignore
   private currentSample: number;
 
   constructor(
