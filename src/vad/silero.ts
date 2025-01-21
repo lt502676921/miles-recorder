@@ -2,9 +2,13 @@ import { OnnxWrapper } from "@/onnx/wrapper";
 import * as ort from "onnxruntime-web";
 ort.env.wasm.numThreads = 1;
 export class SileroModel extends OnnxWrapper {
+  // @ts-ignore
   private _state: number[][];
+   // @ts-ignore
   private _context: number[];
+   // @ts-ignore
   private _last_sr: number;
+   // @ts-ignore
   private _last_batch_size: number;
   private readonly sample_rates: number[];
 
