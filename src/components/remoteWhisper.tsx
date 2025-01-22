@@ -1,9 +1,10 @@
 import { Prefetch } from '@/components/prefetch';
 import { useVad } from '@/vad/use-vad';
 import { useWhisper } from '@/whisper/use-whisper';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import type { Socket } from 'socket.io-client';
 
-export default function Remote() {
+export default function Remote({ socket }: { socket: Socket | null }) {
   const [transcription, setTranscription] = useState<String[]>([]);
   const { remoteRun } = useWhisper();
   const { recording, processing } = useVad({
@@ -29,6 +30,12 @@ export default function Remote() {
       }
     },
   });
+
+  useEffect(() => {
+    if (socket && transcription.length > 0) {
+      socket.emit('broadcastSentence', transcription[transcription.length - 1]);
+    }
+  }, [transcription, socket]);
 
   return (
     <div className="rounded-2xl h-full ring-1 ring-zinc-800 px-8 py-8 flex flex-col">

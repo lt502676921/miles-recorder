@@ -24,3 +24,13 @@ Requirements list:
   - words pop-up
 
   - a microphone icon that shows it is recording sound or not recording sound
+
+# Development
+
+  - Set Up Version Control (github) (why we use github?)
+
+  - Select Tech Stack (golang? java? python? javascript?)
+
+  - Coding
+
+  - Testing
