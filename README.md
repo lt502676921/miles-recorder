@@ -1,4 +1,4 @@
-"Requirements Analysis"
+# Requirements Analysis
 
 Requirements list:
 
@@ -9,7 +9,7 @@ Requirements list:
 
 - display it on the page
 
-"Design"
+# Design
 
 - System Design
 
@@ -21,6 +21,6 @@ Requirements list:
 
 - UI/UX Design (User Interface / User eXperience)
 
- - words pop-up
+  - words pop-up
 
- - a microphone icon that shows it is recording sound or not recording sound
+  - a microphone icon that shows it is recording sound or not recording sound
