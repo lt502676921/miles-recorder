@@ -15,11 +15,11 @@ export default function Home() {
 
   const setRoleToSpeaker = () => {
     setRole('speaker');
-    socket.current = io('wss://miles-recorder-server.oreo.ink', {
+    socket.current = io('https://miles-recorder-server.oreo.ink', {
       transports: ['websocket'],
       extraHeaders: {
-        'Access-Control-Allow-Origin': '*'
-      }
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+      },
     });
     socket.current.on('connect', () => {
       console.log('Connected successfully');
@@ -38,8 +38,8 @@ export default function Home() {
     socket.current = io('wss://miles-recorder-server.oreo.ink', {
       transports: ['websocket'],
       extraHeaders: {
-        'Access-Control-Allow-Origin': '*'
-      }
+        'Access-Control-Allow-Origin': '*',
+      },
     });
     socket.current.on('connect', () => {
       console.log('Connected successfully');
