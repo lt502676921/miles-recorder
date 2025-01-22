@@ -68,7 +68,7 @@ export default function Home() {
         <div className="rounded-2xl h-full ring-1 ring-zinc-800 px-8 py-8 flex flex-col">
           <div className="w-full flex items-center justify-between pb-4">
             <div className={`flex items-center text-2xl font-semibold leading-none tracking-tight text-white`}>
-              Miles' Recorder
+              Miles's Recorder
             </div>
           </div>
 
@@ -100,7 +100,10 @@ export default function Home() {
             <div className="p-4 md:p-5 text-center">
               {!role ? (
                 <>
-                  <h3 className="mb-5 text-lg font-normal text-gray-300 dark:text-gray-400">What is your role ?</h3>
+                  <h3 className="mb-5 text-lg font-normal text-gray-300 dark:text-gray-400">
+                    <div>Welcome to Miles's Recorder !</div>
+                    <div>Which is your role ?</div>
+                  </h3>
                   <button
                     data-modal-hide="popup-modal"
                     type="button"
@@ -121,7 +124,7 @@ export default function Home() {
               {role === 'speaker' ? (
                 <>
                   <h3 className="mb-5 text-lg font-normal text-gray-300 dark:text-gray-400">
-                    Welcome to Miles' Recorder !<div>Please choose a model</div>
+                    <div>Please choose a model for Whisper</div>
                   </h3>
                   <button
                     data-modal-hide="popup-modal"

@@ -41,7 +41,7 @@ export default function Local({ socket }: { socket: Socket | null }) {
     <div className="rounded-2xl h-full ring-1 ring-zinc-800 px-8 py-8 flex flex-col">
       <div className="w-full flex items-center justify-between pb-4">
         <div className={`flex items-center text-2xl font-semibold leading-none tracking-tight text-white`}>
-          Miles' Recorder
+          Miles's Recorder
         </div>
         <div className="flex gap-2 items-center">
           <Prefetch
