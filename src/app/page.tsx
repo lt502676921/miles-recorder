@@ -15,7 +15,12 @@ export default function Home() {
 
   const setRoleToSpeaker = () => {
     setRole('speaker');
-    socket.current = io('https://miles-recorder-server.oreo.ink');
+    socket.current = io('wss://miles-recorder-server.oreo.ink', {
+      transports: ['websocket'],
+      extraHeaders: {
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
     socket.current.on('connect', () => {
       console.log('Connected successfully');
 
@@ -30,7 +35,12 @@ export default function Home() {
   const setRoleToListener = () => {
     setRole('listener');
 
-    socket.current = io('https://miles-recorder-server.oreo.ink');
+    socket.current = io('wss://miles-recorder-server.oreo.ink', {
+      transports: ['websocket'],
+      extraHeaders: {
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
     socket.current.on('connect', () => {
       console.log('Connected successfully');
 
