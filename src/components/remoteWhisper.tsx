@@ -11,29 +11,26 @@ export default function Remote({ socket }: { socket: Socket | null }) {
     onSpeechEnd: async ({ blob }) => {
       let value = await remoteRun(blob);
       if (value.trim()) {
-        // if (transcription.length > 0) {
-        //   const lastItem = transcription[transcription.length - 1];
-        //   const splitArr = value.split(lastItem as string);
-        //   console.log(splitArr);
-        // } else {
-        //   setTranscription(pre => {
-        //     const temp = [...pre];
-        //     temp.push(value);
-        //     return temp;
-        //   });
-        // }
-        setTranscription(pre => {
-          const temp = [...pre];
-          temp.push(value);
-          return temp;
-        });
+        setTranscription(pre => [value, ...pre]);
       }
     },
   });
 
+  const processTranscription = (value: string) => {
+    if (value.trim()) {
+      if (transcription.length > 0) {
+        const lastItem = transcription[transcription.length - 1];
+        const splitArr = value.split(lastItem as string);
+        console.log(splitArr);
+      } else {
+        setTranscription(pre => [value, ...pre]);
+      }
+    }
+  };
+
   useEffect(() => {
     if (socket && transcription.length > 0) {
-      socket.emit('broadcastSentence', transcription[transcription.length - 1]);
+      socket.emit('broadcastSentence', transcription[0]);
     }
   }, [transcription, socket]);
 

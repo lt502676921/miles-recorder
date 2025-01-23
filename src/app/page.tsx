@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import type { Socket } from 'socket.io-client';
 import Local from '@/components/localWhisper';
@@ -8,12 +8,23 @@ import Remote from '@/components/remoteWhisper';
 export default function Home() {
   const [role, setRole] = useState<'speaker' | 'listener' | null>(null);
   const [mode, setMode] = useState<'remote' | 'local' | null>(null);
-
   const [receivedSentences, setReceivedSentences] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const socket = useRef<Socket | null>(null);
+  const isConnect = useRef(false);
+
+  useEffect(() => {
+    return () => {
+      if (socket.current) {
+        socket.current.disconnect();
+      }
+    };
+  }, []);
 
   const setRoleToSpeaker = () => {
+    if (isConnect.current) return;
+    setIsLoading(true);
     setRole('speaker');
     socket.current = io('https://miles-recorder-server.oreo.ink', {
       transports: ['websocket'],
@@ -22,10 +33,18 @@ export default function Home() {
       },
     });
     socket.current.on('connect', () => {
+      if (isConnect.current) return;
+      isConnect.current = true;
       console.log('Connected successfully');
+      setIsLoading(false);
 
       socket.current!.on('error', err => {
         console.log(err);
+      });
+
+      socket.current!.on('disconnect', () => {
+        console.log('断开连接');
+        isConnect.current = false;
       });
 
       socket.current!.emit('join', 'Speaker');
@@ -33,8 +52,9 @@ export default function Home() {
   };
 
   const setRoleToListener = () => {
+    if (isConnect.current) return;
+    setIsLoading(true);
     setRole('listener');
-
     socket.current = io('wss://miles-recorder-server.oreo.ink', {
       transports: ['websocket'],
       extraHeaders: {
@@ -42,16 +62,24 @@ export default function Home() {
       },
     });
     socket.current.on('connect', () => {
+      if (isConnect.current) return;
+      isConnect.current = true;
       console.log('Connected successfully');
+      setIsLoading(false);
 
       socket.current!.on('error', err => {
         console.log(err);
       });
 
+      socket.current!.on('disconnect', () => {
+        console.log('断开连接');
+        isConnect.current = false;
+      });
+
       socket.current!.emit('join', 'Listener');
 
       socket.current!.on('newSentence', sentence => {
-        setReceivedSentences(pre => [...pre, sentence]);
+        setReceivedSentences(pre => [sentence, ...pre]);
       });
     });
   };
@@ -93,7 +121,9 @@ export default function Home() {
         id="popup-modal"
         tabIndex={-1}
         className={`${
-          (role && role === 'speaker' && mode) || (role && role === 'listener') ? 'hidden' : ''
+          (!isLoading && role && role === 'speaker' && mode) || (!isLoading && role && role === 'listener')
+            ? 'hidden'
+            : ''
         } bg-[#00000073] backdrop-blur overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full`}>
         <div className="relative p-4 w-full max-w-md max-h-full">
           <div className="relative bg-[#0e1013] rounded-lg dark:bg-gray-700 shadow-2xl">
@@ -121,7 +151,30 @@ export default function Home() {
                 </>
               ) : null}
 
-              {role === 'speaker' ? (
+              {role && isLoading ? (
+                <div className="w-full flex items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-gray-300 animate-spin">
+                    <path d="M12 2v4" />
+                    <path d="m16.2 7.8 2.9-2.9" />
+                    <path d="M18 12h4" />
+                    <path d="m16.2 16.2 2.9 2.9" />
+                    <path d="M12 18v4" />
+                    <path d="m4.9 19.1 2.9-2.9" />
+                    <path d="M2 12h4" />
+                    <path d="m4.9 4.9 2.9 2.9" />
+                  </svg>
+                </div>
+              ) : !isLoading && role === 'speaker' ? (
                 <>
                   <h3 className="mb-5 text-lg font-normal text-gray-300 dark:text-gray-400">
                     <div>Please choose a model for Whisper</div>

@@ -22,18 +22,14 @@ export default function Local({ socket }: { socket: Socket | null }) {
         //     return temp;
         //   });
         // }
-        setTranscription(pre => {
-          const temp = [...pre];
-          temp.push(value);
-          return temp;
-        });
+        setTranscription(pre => [value, ...pre]);
       }
     },
   });
 
   useEffect(() => {
     if (socket && transcription.length > 0) {
-      socket.emit('broadcastSentence', transcription[transcription.length - 1]);
+      socket.emit('broadcastSentence', transcription[0]);
     }
   }, [transcription, socket]);
 
