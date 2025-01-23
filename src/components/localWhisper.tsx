@@ -20,7 +20,7 @@ export default function Local({ socket }: { socket: Socket | null }) {
 
   useEffect(() => {
     if (socket && transcription.length > 0) {
-      socket.emit('broadcastSentence', transcription[0]);
+      socket.emit('broadcastSentence', transcription[transcription.length - 1]);
       listBottomRef.current && listBottomRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [transcription, socket]);
