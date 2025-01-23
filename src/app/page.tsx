@@ -13,6 +13,7 @@ export default function Home() {
 
   const socket = useRef<Socket | null>(null);
   const isConnect = useRef(false);
+  const listBottomRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     return () => {
@@ -21,6 +22,12 @@ export default function Home() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (receivedSentences.length > 0) {
+      listBottomRef.current && listBottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [receivedSentences]);
 
   const setRoleToSpeaker = () => {
     if (isConnect.current) return;
@@ -79,7 +86,7 @@ export default function Home() {
       socket.current!.emit('join', 'Listener');
 
       socket.current!.on('newSentence', sentence => {
-        setReceivedSentences(pre => [sentence, ...pre]);
+        setReceivedSentences(pre => [...pre, sentence]);
       });
     });
   };
@@ -113,6 +120,7 @@ export default function Home() {
             ) : (
               <div className="text-gray-400 text-lg">The speaker has not spoken yet</div>
             )}
+            <div ref={listBottomRef} />
           </ul>
         </div>
       )}

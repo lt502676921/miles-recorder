@@ -34,3 +34,25 @@ Requirements list:
   - Coding
 
   - Testing
+
+# Deployment
+
+  - There is a powerful computer somewhere
+
+  - we send our code to it
+
+  - our code is running in the powerful computer
+
+  - The computer provide a port that we can visit it
+
+# Feedback
+
+  - things that should be improved
+
+  - won't send the feedback to you
+
+  - the user close it then the user open another app
+
+  - how to improve your app
+
+  - You don't know what went wrong with your program.

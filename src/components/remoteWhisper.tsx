@@ -1,7 +1,7 @@
 import { Prefetch } from '@/components/prefetch';
 import { useVad } from '@/vad/use-vad';
 import { useWhisper } from '@/whisper/use-whisper';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Socket } from 'socket.io-client';
 
 export default function Remote({ socket }: { socket: Socket | null }) {
@@ -11,26 +11,17 @@ export default function Remote({ socket }: { socket: Socket | null }) {
     onSpeechEnd: async ({ blob }) => {
       let value = await remoteRun(blob);
       if (value.trim()) {
-        setTranscription(pre => [value, ...pre]);
+        setTranscription(pre => [...pre, value]);
       }
     },
   });
 
-  const processTranscription = (value: string) => {
-    if (value.trim()) {
-      if (transcription.length > 0) {
-        const lastItem = transcription[transcription.length - 1];
-        const splitArr = value.split(lastItem as string);
-        console.log(splitArr);
-      } else {
-        setTranscription(pre => [value, ...pre]);
-      }
-    }
-  };
+  const listBottomRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (socket && transcription.length > 0) {
       socket.emit('broadcastSentence', transcription[0]);
+      listBottomRef.current && listBottomRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [transcription, socket]);
 
@@ -104,6 +95,7 @@ export default function Remote({ socket }: { socket: Socket | null }) {
         ) : (
           <div className="text-gray-400 text-lg">Speak please</div>
         )}
+        <div ref={listBottomRef} />
       </ul>
     </div>
   );

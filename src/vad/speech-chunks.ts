@@ -57,6 +57,9 @@ export class SpeechChunks {
         this.isSpeechActive = false;
         const float32Array = this.getFlot32Array();
         const blob = this.getBlob(float32Array);
+
+        this.chunks = []
+
         void this.onSpeechEnd({ blob, float32Array });
       }
       if (this.isSpeechActive) {
