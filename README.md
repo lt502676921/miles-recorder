@@ -27,9 +27,9 @@ Requirements list:
 
 # Development
 
-  - Set Up Version Control (github) (why we use github?)
+  - Set Up Version Control (github)
 
-  - Select Tech Stack (golang? java? python? javascript?)
+  - Select Tech Stack
 
   - Coding
 
@@ -47,12 +47,15 @@ Requirements list:
 
 # Feedback
 
-  - things that should be improved
+  - how to get feedback ?
+    - 1. we can get feedback from user
+    - 2. the user won't give us a feedback
+    - 3. when user didn't give the feedback, how to get feedback for us ? how ?
 
-  - won't send the feedback to you
+Engineer
 
-  - the user close it then the user open another app
-
-  - how to improve your app
-
-  - You don't know what went wrong with your program.
+- prepare your develop environment
+- git
+- python
+- node
+- 。。。

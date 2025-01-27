@@ -8,15 +8,20 @@ export default function Remote({ socket }: { socket: Socket | null }) {
   const [transcription, setTranscription] = useState<String[]>([]);
   const { remoteRun } = useWhisper();
   const { recording, processing } = useVad({
-    onSpeechEnd: async ({ blob }) => {
-      let value = await remoteRun(blob);
-      if (value.trim()) {
-        setTranscription(pre => [...pre, value]);
-      }
-    },
+    onSpeechEnd: async ({ blob }) => setData(blob),
   });
 
   const listBottomRef = useRef<HTMLDivElement | null>(null);
+
+  const setData = async (blob: Blob) => {
+    let value = await remoteRun(blob);
+    if (value.trim() && value.trim() !== transcription[transcription.length - 1]) {
+      setTranscription(pre => {
+        const updatedTranscription = [...pre, value];
+        return updatedTranscription.length > 30 ? updatedTranscription.slice(-30) : updatedTranscription;
+      });
+    }
+  };
 
   useEffect(() => {
     if (socket && transcription.length > 0) {
